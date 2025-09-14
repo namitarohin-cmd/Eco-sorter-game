@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Eco-Sorter 🗑️</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f0fff0;
+    }
+    h1 {
+      color: #2e7d32;
+    }
+    #items {
+      margin: 20px;
+    }
+    .bin {
+      width: 120px;
+      height: 140px;
+      border: 3px solid #333;
+      display: inline-block;
+      margin: 15px;
+      border-radius: 10px;
+      font-weight: bold;
+      padding-top: 100px;
+      color: white;
+    }
+    #plastic { background: #2196f3; }
+    #paper { background: #ff9800; }
+    #glass { background: #4caf50; }
+    #organic { background: #795548; }
+    .item {
+      font-size: 22px;
+      cursor: grab;
+      margin: 10px;
+      padding: 8px;
+      display: inline-block;
+      border: 2px solid #333;
+      border-radius: 8px;
+      background: #fff;
+    }
+    #score {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Eco-Sorter 🗑️</h1>
+  <p>🎮 Drag the waste item into the correct bin!</p>
+
+  <div id="items">
+    <div class="item" draggable="true" data-type="plastic">🍼 Plastic Bottle</div>
+    <div class="item" draggable="true" data-type="paper">📄 Paper</div>
+    <div class="item" draggable="true" data-type="glass">🍾 Glass Bottle</div>
+    <div class="item" draggable="true" data-type="organic">🍌 Banana Peel</div>
+  </div>
+
+  <div id="bins">
+    <div class="bin" id="plastic">Plastic Bin</div>
+    <div class="bin" id="paper">Paper Bin</div>
+    <div class="bin" id="glass">Glass Bin</div>
+    <div class="bin" id="organic">Organic Bin</div>
+  </div>
+
+  <p id="score">Score: 0</p>
+
+  <script>
+    let score = 0;
+    const items = document.querySelectorAll(".item");
+    const bins = document.querySelectorAll(".bin");
+    const scoreDisplay = document.getElementById("score");
+
+    // Drag start
+    items.forEach(item => {
+      item.addEventListener("dragstart", e => {
+        e.dataTransfer.setData("type", item.dataset.type);
+        e.dataTransfer.setData("id", item.innerText);
+      });
+    });
+
+    // Allow drop
+    bins.forEach(bin => {
+      bin.addEventListener("dragover", e => e.preventDefault());
+      bin.addEventListener("drop", e => {
+        const type = e.dataTransfer.getData("type");
+        if (bin.id === type) {
+          score += 10;
+          scoreDisplay.innerText = "Score: " + score;
+          alert("✅ Correct! You sorted " + type + " waste.");
+        } else {
+          score -= 5;
+          scoreDisplay.innerText = "Score: " + score;
+          alert("❌ Wrong bin! Try again.");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
